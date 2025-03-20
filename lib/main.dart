@@ -1,15 +1,25 @@
 // PACKAGE IMPORTS
 import 'package:flutter/material.dart';
-import 'package:date_field/date_field.dart';
+import 'package:provider/provider.dart';
 
-// COMPONENT IMPORTS
-// import 'components/CustomAppBar.dart';
+// -- firebase imports --
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 // PAGE IMPORTS
 import 'pages/AddExpense.dart';
+import 'pages/AddIncome.dart';
 import 'pages/homePage.dart';
 
-void main(){
+// PROVIDER IMPORTS
+import 'utils/expense_handler.dart';
+import 'utils/income_handler.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(routing());
 }
 
@@ -18,14 +28,21 @@ class routing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, 
-      title: "KA-CHING", 
-      home: const homePage(), 
-      // home: const CustomAppBar(), 
-      routes: {
-        'addExpense': (BuildContext ctx) => const AddExpense(),
-      } 
+    // https://davidserrano.io/flutter-state-management-made-easy-with-provider-2-provider-as-a-dependency-injection-framework-and-multiprovider
+    return  MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ExpenseProvider()..getExpensesStream()),
+        ChangeNotifierProvider(create: (_) => IncomeProvider()..getIncomesStream()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "KA-CHING",
+        home: const homePage(),
+        routes: {
+          'addExpense': (BuildContext ctx) => AddExpense(),
+          'addIncome': (BuildContext ctx) => AddIncome(),
+        } 
+      ),
     );
   }
 }

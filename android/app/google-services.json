@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "294318775511",
+    "project_id": "adet-ka-ching",
+    "storage_bucket": "adet-ka-ching.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294318775511:android:df9bd46a21807346e6a492",
+        "android_client_info": {
+          "package_name": "com.example.adet_ka_ching"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEussjr9Woev07sQHzwV2PU8n67S1rPNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
