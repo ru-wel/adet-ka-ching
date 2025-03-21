@@ -9,7 +9,8 @@ import 'firebase_options.dart';
 // PAGE IMPORTS
 import 'pages/AddExpense.dart';
 import 'pages/AddIncome.dart';
-import 'pages/homePage.dart';
+import 'pages/HomePage.dart';
+import 'pages/Transactions.dart';
 
 // PROVIDER IMPORTS
 import 'utils/expense_handler.dart';
@@ -37,10 +38,11 @@ class routing extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: "KA-CHING",
-          home: const homePage(),
+          home: const HomePage(),
           routes: {
             'addExpense': (BuildContext ctx) => AddExpenses(),
             'addIncome': (BuildContext ctx) => AddIncomes(),
+            'transactions': (BuildContext ctx) => TransactionsPage(),
           }),
     );
   }

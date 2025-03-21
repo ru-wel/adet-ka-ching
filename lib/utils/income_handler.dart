@@ -7,8 +7,10 @@ class IncomeProvider with ChangeNotifier {
   final CollectionReference _incomesRef = FirebaseFirestore.instance.collection('transactions');
 
   double _incomeTotal = 0.0;
+  double _todayTotal = 0.0;
 
   double get incomeTotal => _incomeTotal;
+  double get todayIncomeTotal => _todayTotal;
 
   Future<void> addIncome(Income income) async {
     await _incomesRef.add({
@@ -46,6 +48,27 @@ class IncomeProvider with ChangeNotifier {
       }
     }
     _incomeTotal = income;
+    notifyListeners();
+  }
+
+  Future<void> calculateTodayTotal() async {
+    final today = DateTime.now();
+    final formattedToday =
+        "${today.year.toString().padLeft(4, '0')}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
+    QuerySnapshot snapshot = await _incomesRef
+        .where('type', whereIn: ['income'])
+        .where('date', isEqualTo: formattedToday)
+        .get();
+
+    double incomeToday = 0.0;
+
+    for (var doc in snapshot.docs) {
+      var amount = (doc['amount'] as num).toDouble();
+      incomeToday += amount;
+    }
+
+    _todayTotal = incomeToday;
     notifyListeners();
   }
 }

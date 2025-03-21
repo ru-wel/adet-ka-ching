@@ -2,6 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../utils/expense_handler.dart';
 
 /*class AddExpense extends StatelessWidget {
   final TextEditingController _dateController = TextEditingController();
@@ -166,6 +169,8 @@ class _AddExpensesState extends State<AddExpenses> {
       'title': _titleController.text,
       'message': _messageController.text,
     });
+    Provider.of<ExpenseProvider>(context, listen: false).calculateTotal();
+    Provider.of<ExpenseProvider>(context, listen: false).calculateTodayTotal();
     Navigator.pop(context);
   }
 
@@ -194,7 +199,7 @@ class _AddExpensesState extends State<AddExpenses> {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFE6845B),
+                        backgroundColor: Color.fromRGBO(230, 132, 91, 1),
                         padding: EdgeInsets.all(15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
@@ -269,7 +274,7 @@ class _AddExpensesState extends State<AddExpenses> {
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 13),
                   child: TextField(
                       controller: _messageController,
-                      maxLength: 30,
+                      maxLength: 50,
                       decoration: InputDecoration(
                           labelText: 'Message',
                           contentPadding: EdgeInsets.symmetric(

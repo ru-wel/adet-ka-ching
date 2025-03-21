@@ -8,17 +8,14 @@ import 'package:intl/intl.dart';
 import '../utils/income_handler.dart';
 import '../utils/expense_handler.dart';
 
-class homePage extends StatefulWidget {
-  const homePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
   @override
-  State<homePage> createState() => _homePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _homePageState extends State<homePage> {
+class _HomePageState extends State<HomePage> {
   @override
-
-  // https://pub.dev/packages/intl
-  String formattedDate = '';
 
   // https://rizkysyawal.medium.com/handling-async-functions-in-flutters-initstate-211eda6a440d
   // https://pmatatias.medium.com/flutter-future-future-sync-future-microtask-future-value-etc-3f46aeae1210
@@ -27,10 +24,15 @@ class _homePageState extends State<homePage> {
     super.initState();
     Future.microtask(() {
       Provider.of<IncomeProvider>(context, listen: false).calculateTotal();
+      Provider.of<IncomeProvider>(context, listen: false).calculateTodayTotal();
       Provider.of<ExpenseProvider>(context, listen: false).calculateTotal();
+      Provider.of<ExpenseProvider>(context, listen: false).calculateTodayTotal();
       getCurrentDate();
     });
   }
+
+  // https://pub.dev/packages/intl
+  String formattedDate = '';
 
   // https://api.flutter.dev/flutter/intl/DateFormat-class.html
   void getCurrentDate() {
@@ -41,12 +43,19 @@ class _homePageState extends State<homePage> {
       formattedDate = formatted;
     });
   }
+  
 
+  @override
   Widget build(BuildContext context) {
-    final CollectionReference transactions =
-        FirebaseFirestore.instance.collection('transactions');
+    final CollectionReference transactions = FirebaseFirestore.instance.collection('transactions');
     final income = Provider.of<IncomeProvider>(context).incomeTotal;
     final expense = Provider.of<ExpenseProvider>(context).expenseTotal;
+
+    final todayIncomeTotal = Provider.of<IncomeProvider>(context).todayIncomeTotal;
+    final todayExpenseTotal = Provider.of<ExpenseProvider>(context).todayExpenseTotal;
+
+    final today = DateTime.now();
+    final formattedToday = "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -172,7 +181,10 @@ class _homePageState extends State<homePage> {
 
             // StreamBuilder to get and update data real-time
             body: StreamBuilder<QuerySnapshot>(
-              stream: transactions.orderBy('id', descending: true).snapshots(),
+              stream: transactions
+                .where('date', isEqualTo: formattedToday)
+                .orderBy('id', descending: true)
+                .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center(
@@ -223,6 +235,7 @@ class _homePageState extends State<homePage> {
                         type: item['type'],
                         title: item['title'] ?? 'No title',
                         amount: item['amount'] ?? '0',
+                        message: item['message'] ?? 'No message'
                       );
                     }
 
@@ -249,7 +262,7 @@ class _homePageState extends State<homePage> {
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
-                                        "₱${income} - ₱${expense}",
+                                        "₱$todayIncomeTotal - ₱$todayExpenseTotal",
                                         style: TextStyle(
                                             fontFamily: "Nunito Sans",
                                             color: Color(0xFFE6845B),
@@ -260,7 +273,7 @@ class _homePageState extends State<homePage> {
                                           backgroundColor:
                                               Color.fromRGBO(173, 223, 211, 1),
                                           radius: 40,
-                                          child: Text("₱${income - expense}",
+                                          child: Text("₱${todayIncomeTotal - todayExpenseTotal}",
                                               style: TextStyle(
                                                   fontFamily: "Nunito Sans",
                                                   color: Colors.white,
@@ -292,8 +305,10 @@ class _homePageState extends State<homePage> {
                             iconSize: 40.0,
                           ),
                           IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.home),
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('transactions');
+                            },
+                            icon: Icon(Icons.content_paste),
                             iconSize: 40.0,
                           ),
                           IconButton(
@@ -310,7 +325,7 @@ class _homePageState extends State<homePage> {
 }
 
 Widget transactionCard(
-    {required String type, required String title, required int amount}) {
+    { required String type, required String title, required int amount, required String message, }) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -349,10 +364,10 @@ Widget transactionCard(
                         fontFamily: "Nunito Sans"),
                   ),
                   Text(
-                    "this is where you'll be inserting the message bossing",
+                    "$message",
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 10,
+                        fontSize: 14,
                         fontFamily: "Nunito Sans"),
                   )
                 ],

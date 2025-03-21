@@ -7,8 +7,10 @@ class ExpenseProvider with ChangeNotifier {
   final CollectionReference _expensesRef = FirebaseFirestore.instance.collection('transactions');
 
   double _expenseTotal = 0.0;
+  double _todayTotal = 0.0;
 
   double get expenseTotal => _expenseTotal;
+  double get todayExpenseTotal => _todayTotal;
 
   Future<void> addExpense(Expense expense) async {
     await _expensesRef.add({
@@ -46,6 +48,27 @@ class ExpenseProvider with ChangeNotifier {
       }
     }
     _expenseTotal = expense;
+    notifyListeners();
+  }
+
+  Future<void> calculateTodayTotal() async {
+    final today = DateTime.now();
+    final formattedToday =
+        "${today.year.toString().padLeft(4, '0')}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
+    QuerySnapshot snapshot = await _expensesRef
+        .where('type', whereIn: ['expense'])
+        .where('date', isEqualTo: formattedToday)
+        .get();
+
+    double expenseToday = 0.0;
+
+    for (var doc in snapshot.docs) {
+      var amount = (doc['amount'] as num).toDouble();
+      expenseToday += amount;
+    }
+
+    _todayTotal = expenseToday;
     notifyListeners();
   }
 }
