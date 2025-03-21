@@ -17,9 +17,7 @@ import 'utils/income_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(routing());
 }
 
@@ -29,22 +27,21 @@ class routing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // https://davidserrano.io/flutter-state-management-made-easy-with-provider-2-provider-as-a-dependency-injection-framework-and-multiprovider
-    return  MultiProvider(
+    return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ExpenseProvider()..getExpensesStream()),
-        ChangeNotifierProvider(create: (_) => IncomeProvider()..getIncomesStream()),
+        ChangeNotifierProvider(
+            create: (_) => ExpenseProvider()..getExpensesStream()),
+        ChangeNotifierProvider(
+            create: (_) => IncomeProvider()..getIncomesStream()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "KA-CHING",
-        home: const homePage(),
-        routes: {
-          'addExpense': (BuildContext ctx) => AddExpense(),
-          'addIncome': (BuildContext ctx) => AddIncome(),
-        } 
-      ),
+          debugShowCheckedModeBanner: false,
+          title: "KA-CHING",
+          home: const homePage(),
+          routes: {
+            'addExpense': (BuildContext ctx) => AddExpenses(),
+            'addIncome': (BuildContext ctx) => AddIncome(),
+          }),
     );
   }
 }
-
-
