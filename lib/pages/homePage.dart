@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:intl/intl.dart';
+
 import '../utils/income_handler.dart';
 import '../utils/expense_handler.dart';
 
@@ -14,21 +16,37 @@ class homePage extends StatefulWidget {
 
 class _homePageState extends State<homePage> {
   @override
+
+  // https://pub.dev/packages/intl
+  String formattedDate = '';
+
   // https://rizkysyawal.medium.com/handling-async-functions-in-flutters-initstate-211eda6a440d
   // https://pmatatias.medium.com/flutter-future-future-sync-future-microtask-future-value-etc-3f46aeae1210
+
   void initState() {
     super.initState();
     Future.microtask(() {
       Provider.of<IncomeProvider>(context, listen: false).calculateTotal();
       Provider.of<ExpenseProvider>(context, listen: false).calculateTotal();
+      getCurrentDate();
+    });
+  }
+
+  // https://api.flutter.dev/flutter/intl/DateFormat-class.html
+  void getCurrentDate() {
+    DateTime now = DateTime.now();
+    String formatted = DateFormat('MMMM d, y').format(now);
+
+    setState(() {
+      formattedDate = formatted;
     });
   }
 
   Widget build(BuildContext context) {
-    final CollectionReference transactions =
-        FirebaseFirestore.instance.collection('transactions');
+    final CollectionReference transactions = FirebaseFirestore.instance.collection('transactions');
     final income = Provider.of<IncomeProvider>(context).incomeTotal;
     final expense = Provider.of<ExpenseProvider>(context).expenseTotal;
+
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -166,18 +184,33 @@ class _homePageState extends State<homePage> {
                 return ListView.builder(
                   itemCount: data.length + 2,
                   itemBuilder: (context, index) {
+                    
                     // title part
                     if (index == 0) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: Center(
-                          child: Text(
-                            "TODAY'S EXPENSES",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                color: Colors.black,
-                                fontFamily: 'Jua'),
+                          child: Column(
+                            children: [
+                              Text(
+                                "TODAY'S EXPENSES",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.black,
+                                  fontFamily: 'Jua',
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                formattedDate,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey[700],
+                                  fontFamily: 'Jua',
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );
