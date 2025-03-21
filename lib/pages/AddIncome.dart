@@ -190,6 +190,7 @@ class _AddIncomesState extends State<AddIncomes> {
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 13),
                   child: TextField(
                       controller: _messageController,
+                      maxLength: 30,
                       decoration: InputDecoration(
                           labelText: 'Message',
                           contentPadding: EdgeInsets.symmetric(

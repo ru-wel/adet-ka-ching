@@ -43,10 +43,10 @@ class _homePageState extends State<homePage> {
   }
 
   Widget build(BuildContext context) {
-    final CollectionReference transactions = FirebaseFirestore.instance.collection('transactions');
+    final CollectionReference transactions =
+        FirebaseFirestore.instance.collection('transactions');
     final income = Provider.of<IncomeProvider>(context).incomeTotal;
     final expense = Provider.of<ExpenseProvider>(context).expenseTotal;
-
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -184,7 +184,6 @@ class _homePageState extends State<homePage> {
                 return ListView.builder(
                   itemCount: data.length + 2,
                   itemBuilder: (context, index) {
-                    
                     // title part
                     if (index == 0) {
                       return Padding(
@@ -338,11 +337,27 @@ Widget transactionCard(
               ),
             ),
             const SizedBox(width: 12),
-            Text(
-              title,
-              style: TextStyle(
-                  color: Colors.white, fontSize: 20, fontFamily: "Nunito Sans"),
-            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: "Nunito Sans"),
+                  ),
+                  Text(
+                    "this is where you'll be inserting the message bossing",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                        fontFamily: "Nunito Sans"),
+                  )
+                ],
+              ),
+            )
           ],
         ),
         Text(
