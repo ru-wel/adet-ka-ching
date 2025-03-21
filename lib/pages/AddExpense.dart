@@ -174,8 +174,9 @@ class _AddExpensesState extends State<AddExpenses> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'ADD EXPENSE',
-            style: TextStyle(fontFamily: 'Jua', color: Colors.white),
+            'KA-CHING!',
+            style:
+                TextStyle(fontFamily: 'Jua', color: Colors.white, fontSize: 30),
           ),
           centerTitle: true,
           backgroundColor: Color.fromRGBO(173, 223, 211, 1),
@@ -199,7 +200,7 @@ class _AddExpensesState extends State<AddExpenses> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      child: Text('INCOME',
+                      child: Text('EXPENSE',
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: "Jua",
@@ -252,7 +253,7 @@ class _AddExpensesState extends State<AddExpenses> {
                   child: TextField(
                       controller: _titleController,
                       decoration: InputDecoration(
-                          labelText: 'Title',
+                          labelText: 'Expense Title',
                           labelStyle: TextStyle(color: Colors.black87),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),

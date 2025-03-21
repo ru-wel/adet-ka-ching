@@ -40,7 +40,7 @@ class routing extends StatelessWidget {
           home: const homePage(),
           routes: {
             'addExpense': (BuildContext ctx) => AddExpenses(),
-            'addIncome': (BuildContext ctx) => AddIncome(),
+            'addIncome': (BuildContext ctx) => AddIncomes(),
           }),
     );
   }
