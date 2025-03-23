@@ -165,7 +165,7 @@ class _AddExpensesState extends State<AddExpenses> {
       'id': id,
       'type': "expense",
       'date': _dateController.text,
-      'amount': int.parse(_amountController.text),
+      'amount': double.parse(_amountController.text),
       'title': _titleController.text,
       'message': _messageController.text,
     });

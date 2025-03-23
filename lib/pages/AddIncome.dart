@@ -86,7 +86,7 @@ class _AddIncomesState extends State<AddIncomes> {
       'id': id,
       'type': "income",
       'date': _dateController.text,
-      'amount': int.parse(_amountController.text),
+      'amount': double.parse(_amountController.text),
       'title': _titleController.text,
       'message': _messageController.text,
     });

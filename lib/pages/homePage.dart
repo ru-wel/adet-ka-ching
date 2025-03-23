@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                                             ],
                                           ),
                                           Text(
-                                            "₱${income - expense}",
+                                            "₱${(income - expense).toStringAsFixed(2)}",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: "Nunito Sans"),
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                                             ],
                                           ),
                                           Text(
-                                            "₱$income",
+                                            "₱${income.toStringAsFixed(2)}",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: "Nunito Sans"),
@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                                             ],
                                           ),
                                           Text(
-                                            "₱$expense",
+                                            "₱${expense.toStringAsFixed(2)}",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: "Nunito Sans"),
@@ -272,8 +272,8 @@ class _HomePageState extends State<HomePage> {
                                       CircleAvatar(
                                           backgroundColor:
                                               Color.fromRGBO(173, 223, 211, 1),
-                                          radius: 40,
-                                          child: Text("₱${todayIncomeTotal - todayExpenseTotal}",
+                                          radius: 45,
+                                          child: Text("₱${(todayIncomeTotal - todayExpenseTotal).toStringAsFixed(2)}",
                                               style: TextStyle(
                                                   fontFamily: "Nunito Sans",
                                                   color: Colors.white,
@@ -325,7 +325,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget transactionCard(
-    { required String type, required String title, required int amount, required String message, }) {
+    { required String type, required String title, required double amount, required String message, }) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),

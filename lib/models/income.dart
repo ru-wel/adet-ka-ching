@@ -4,7 +4,7 @@
 class Income {
   final int? id;
   final String title;
-  final int amount;
+  final double amount;
   final String date;
   final String message;
   final String type;
