@@ -9,7 +9,8 @@ class TransactionsPage extends StatefulWidget {
 }
 
 class _TransactionsPageState extends State<TransactionsPage> {
-  final CollectionReference transactions = FirebaseFirestore.instance.collection('transactions');
+  final CollectionReference transactions =
+      FirebaseFirestore.instance.collection('transactions');
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           final data = snapshot.data!.docs;
 
           // group transactions according to date
-          // basically parang 
+          // basically parang
           // {
           //  '2025-03-21' : [lahat ng transactions for that date]
           // }
@@ -57,6 +58,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     child: Text(
                       entry.key, // date string e.g. '2025-03-21'
                       style: const TextStyle(
+                        fontFamily: "Jua",
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(0, 0, 0, 1),
@@ -70,20 +72,21 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         doc['title'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontFamily: "Nunito Sans",
                           fontSize: 16,
                         ),
                       ),
                       subtitle: Text(
                         doc['message'] ?? '',
                         style: TextStyle(
-                          color: Colors.grey,
-                        ),
+                            color: Colors.grey, fontFamily: "Nunito Sans"),
                       ),
                       trailing: Text(
                         '₱${doc['amount']}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                          fontFamily: "Nunito Sans",
                           color: doc['type'] == 'income'
                               ? Color.fromRGBO(173, 223, 211, 1)
                               : Color.fromRGBO(230, 132, 91, 1),
@@ -93,8 +96,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         doc['type'] == 'income'
                             ? Icons.savings
                             : Icons.credit_card,
-                        color:
-                            doc['type'] == 'income' ? Color.fromRGBO(173, 223, 211, 1) : Color.fromRGBO(230, 132, 91, 1),
+                        color: doc['type'] == 'income'
+                            ? Color.fromRGBO(173, 223, 211, 1)
+                            : Color.fromRGBO(230, 132, 91, 1),
                       ),
                     );
                   }).toList(),
