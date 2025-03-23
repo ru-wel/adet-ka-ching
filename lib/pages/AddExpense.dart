@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/expense_handler.dart';
@@ -240,6 +241,10 @@ class _AddExpensesState extends State<AddExpenses> {
                       controller: _amountController,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+(\.\d*)?')),
+                      ],
                       decoration: InputDecoration(
                           labelText: 'Amount',
                           labelStyle: TextStyle(color: Colors.black87),
