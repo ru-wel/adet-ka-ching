@@ -298,7 +298,17 @@ class _AddExpensesState extends State<AddExpenses> {
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 13),
                     child: ElevatedButton(
-                      onPressed: () => _saveExpense(context),
+                      onPressed: () {
+                        if (_dateController.text == " " ||
+                            _amountController.text == 0 ||
+                            _titleController.text == "" ||
+                            _messageController.text == "") {
+                          print("Please fill out the whole form.");
+                        } else {
+                          _saveExpense(context);
+                        }
+                      },
+                      /*=> _saveExpense(context),*/
                       child: Text(
                         'SAVE EXPENSE',
                         style:
